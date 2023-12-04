@@ -5,14 +5,14 @@
 # Inside each subfolder there must be only one input file.
 # You need a slurm template on the same root folder as this
 # script, containing the strings "FILENAME" and "JOBNAME",
-# see the following example:
+# see the following example with a CP2K slurm template:
 #    !/bin/bash
 #    #SBATCH -J JOBNAME
 #    [...]
 #    cp2k.psmp -o FILENAME.out -i FILENAME.inp
 ###########################################################
-slurm_template="cp2k-slurm_template.sh"
-slurm_new_name="cp2k-slurm.sh"
+slurm_template="slurm_template.sh"
+slurm_new_name="slurm.sh"
 input_extension=".inp"
 ###########################################################
 
@@ -20,7 +20,7 @@ current_dir=$(pwd)
 
 for dir in "$current_dir"/*; do
     if [ -d "$dir" ]; then
-        # Find the input/s files and save their full names
+        # Find the input/s file/s and save their full path
         inp_files=("$dir"/*"$input_extension")
         # If no input file is found, skip this directory
         if [ ! -f "${inp_files[0]}" ]; then
@@ -30,7 +30,7 @@ for dir in "$current_dir"/*; do
         # Job name will be the name of the folder
         job_name=$(basename "$dir")
         
-        # If more than one input file is found, print an error
+        # If more than one input file is found, print an error and skip
         if [ ${#inp_files[@]} -gt 1 ]; then
             echo "ERROR: More than one input file found in $job_name. Skipping..."
             continue
