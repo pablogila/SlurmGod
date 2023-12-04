@@ -17,12 +17,13 @@ for dir in "$current_dir"/*; do
             continue
         fi
         
-        cd ${dir}
+        job_name=$(basename "$dir")
+        echo "Launching job  $job_name"
+
+        cd "${dir}"
         sbatch $slurm_file
         cd ..
 
-        job_name=$(basename "$dir")
-        echo "Launching job  $job_name"
     fi
 done
 echo "Done."
