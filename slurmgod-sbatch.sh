@@ -18,7 +18,7 @@ for dir in "$current_dir"/*; do
         fi
         
         job_name=$(basename "$dir")
-        echo "Launching job  $job_name"
+        echo "Launching from  $job_name"
 
         cd "${dir}"
         sbatch $slurm_file
